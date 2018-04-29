@@ -3,13 +3,13 @@
 import socket
 import sys
 
-port = sys.argv[1].strip()
+ip   = sys.argv[1].strip()
 port = int(sys.argv[2].strip())
 
 videofile = "sample-video.mp4"
 
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serv.bind( ('localhost', port) )
+serv.bind( (ip, port) )
 serv.listen(5)
 
 with open(videofile, "rb") as f:
