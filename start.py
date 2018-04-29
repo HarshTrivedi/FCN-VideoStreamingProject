@@ -55,13 +55,8 @@ def start_network():
     print 'Server          : {}'.format(server.IP())    
 
 
-    # #################### NOTE THIS #########################################
-    # Go in CLI mode here and debug why client server connections are not working.
-    # Worse is that from vclient, I am able to ping server. but iperf test is not working for some reason
-    # In server: iperf -s <server_ip>   and   vclient: iperf -c  is not working.
-    # Unless tcp iperf doesn't work, tcp video streaming connection wont work aswell ...
+    # Keep CLI anywhere and start to debug what is happening
     # CLI(net) 
-    ############################################################################
     
     video_stream_port   = 5000
     competing_flow_port = 5001
@@ -76,8 +71,6 @@ def start_network():
     video_client.cmd('python video_client.py {} {} &'.format( server.IP(), video_stream_port))
         # Inside: make sure the client logs request intervals and playback-buffer state
     print 'Started Video Streaming Client'
-
-    CLI(net)
     
     # start bottleneck-link buffer logging on server.
     # Use tc show <interface name> command and log periodically. Partially coded, don't understand how to parse tc show output.
