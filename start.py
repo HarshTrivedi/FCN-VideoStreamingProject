@@ -77,11 +77,16 @@ def start_network():
         # Inside: make sure the client logs request intervals and playback-buffer state
     print 'Started Video Streaming Client'
 
-
+    CLI(net)
     
     # start bottleneck-link buffer logging on server.
-    server.cmd('python log_playback_buffer.py &')
-    print 'Started  daeomon to log PlayBack Buffer periodically'
+    # Use tc show <interface name> command and log periodically. Partially coded, don't understand how to parse tc show output.
+    # server.cmd('python log_link_buffer.py server-eth1 &')
+    # print 'Started  daemon to log queue size left of bottleneck-link on server'
+
+    # start to log the playback buffer periodically on video client
+    video_client.cmd('python log_playback_buffer.py &')
+    print 'Started  daeomon to log PlayBack Buffer periodically on video client'
     
     # start throughput logging daemon on video client host
     video_client.cmd('python log_throughput.py vclient-eth0 &')

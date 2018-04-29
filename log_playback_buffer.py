@@ -1,12 +1,10 @@
-import playback_buffer
+from playback_buffer import *
 import sys
 import lib
 from datetime import datetime
+import time
 
 playback_buffer_file = 'logs/playback_buffer.log'
-
-last_received_bytes = lib.received_bytes(interface)
-last_time = time.time()
 
 def playback_buffer_log(playback_buffer):
 
