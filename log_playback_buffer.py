@@ -9,7 +9,8 @@ playback_buffer_file = 'logs/playback_buffer.log'
 def playback_buffer_log(playback_buffer):
 
     with open(playback_buffer_file, 'a+') as f:
-        line = '\t'.join([str(datetime.fromtimestamp( time.time() )), str(playback_buffer)])
+        curr_time = time.time()    	
+        line = '\t'.join([ str(curr_time), str(datetime.fromtimestamp( time.time() )), str(playback_buffer)])
         f.write( line  + '\n')
 
 while True:
