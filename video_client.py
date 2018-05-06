@@ -76,6 +76,10 @@ def select_playback_bitrate(throughput_bitps):
 
 last_request_time = time.time()
 
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.connect((ip,port))
+
+
 while True:
 
     recent_samples = received_throughput[-10:]
@@ -104,9 +108,6 @@ while True:
 
         request_bytes = int(playback_rate * segment_seconds)
 
-        conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn.connect((ip,port))
-
         conn.send(str(request_bytes))
 
         py_log('Sending Message:')
@@ -118,9 +119,14 @@ while True:
         received_msg = ''
         while True:
             data = conn.recv(buffer_size)
-            if not data: break
             received_msg += data
+            if len(received_msg) >= request_bytes:
+                break
+            if not data: 
+                break
         received_len = len(received_msg)
+
+
 
         py_log('Received Message Length:')
         py_log(received_len)

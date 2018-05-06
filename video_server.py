@@ -19,31 +19,30 @@ videofile = "sample-video.mp4"
 serv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serv.bind( (ip, port) )
 serv.listen(5)
+conn, addr = serv.accept()
 
 # with open(videofile, "rb") as f:    
     # while True:
-    #     conn, addr = serv.accept()
     #     request_size = conn.recv(10)
-    #     request_size = int(request_size.strip())
-    #     py_log('Got Message:')
-    #     py_log(request_size)
-    #     requested_bytes = ('*'*request_size)
-    #     conn.send(requested_bytes)
-    #     py_log('Send Message Length:')
-    #     py_log(len(requested_bytes))        
-    #     conn.close()
+    #     if request_size.strip():
+    #         py_log('Got Message:')
+    #         py_log(request_size)
+    #         request_size = int(request_size.strip())
+    #         requested_bytes = ('*'*request_size)
+    #         conn.send(requested_bytes)
+    #         py_log('Send Message Length:')
+    #         py_log(len(requested_bytes))        
 
 while True:
-    conn, addr = serv.accept()
     request_size = conn.recv(10)
-    request_size = int(request_size.strip())
-    py_log('Got Message:')
-    py_log(request_size)
-    requested_bytes = ('*'*request_size)
-    conn.send(requested_bytes)
-    py_log('Send Message Length:')
-    py_log(len(requested_bytes))        
-    conn.close()
+    if request_size.strip():
+        py_log('Got Message:')
+        py_log(request_size)
+        request_size = int(request_size.strip())
+        requested_bytes = ('*'*request_size)
+        conn.send(requested_bytes)
+        py_log('Send Message Length:')
+        py_log(len(requested_bytes))        
 
 
 
