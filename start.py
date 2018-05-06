@@ -41,7 +41,7 @@ def start_network():
     dumpNodeConnections(net.hosts)
     net.pingAll()
 
-    experiment_duration       = 100  # 15 minutes
+    experiment_duration       = 150  # 15 minutes
     experiment_start_time     = time.time()
     competing_flow_start_time = experiment_start_time + 50 # start after 5 minutes
     
@@ -61,7 +61,7 @@ def start_network():
     video_stream_port   = 5000
     competing_flow_port = 5001
 
-    # CLI(net) Turn this ON and execute scripts eg. server python video_server.py  <server_ip> to debug
+    # # CLI(net) Turn this ON and execute scripts eg. server python video_server.py  <server_ip> to debug
     
     # start video streaming server on server host
     server.cmd('python video_server.py {} {} &'.format(server.IP(), video_stream_port))
@@ -84,6 +84,10 @@ def start_network():
     # start throughput logging daemon on video client host
     video_client.cmd('python log_throughput.py vclient-eth0 &')
     print 'Started  daeomon to log throughput on video-client interface periodically'
+
+    # start throughput logging daemon on competing-flow host
+    competing_client.cmd('python log_throughput.py cclient-eth0 &')                
+    print 'Started  daeomon to log throughput on competing client interface periodically'
     
     # start congestion window logging on server for port that has video-streaming
     server.cmd('python log_cwnd.py {} &'.format(video_stream_port))
@@ -105,23 +109,21 @@ def start_network():
                 # hence start the client first and server then
 
                 # start competing_flow_client.py
-                server.cmd("python competing_flow_client.py &")
+                competing_client.cmd("python competing_flow_server.py &")
                 print 'Competing flow server started.'
 
                 # start competing_flow_server.py                
-                competing_client.cmd("python competing_flow_server.py {} &".format( server.IP() ) )
+                server.cmd("python competing_flow_client.py {} &".format( competing_client.IP() ) )
                 print 'Competing flow client started.'
 
-                # start throughput logging daemon on competing-flow host
-                competing_client.cmd('python log_throughput.py cclient-eth0 &')
-                
-                print 'Started  daeomon to log throughput on competing client interface periodically'
                 competing_flow_started = True
 
         time.sleep(1)
 
         if current_time - experiment_start_time > experiment_duration:
             break
+
+    # CLI(net)
     
     stop_network(net)
     print 'Experiment complete.'
