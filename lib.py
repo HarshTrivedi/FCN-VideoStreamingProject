@@ -25,6 +25,7 @@ def transmitted_bytes(interface):
     return rbytes
 
 
+# get router (link) buffer left on given interface
 def link_buffer_left(interface):
     # TODO :
       # Don't understand how to parse this!??
@@ -39,6 +40,10 @@ def link_buffer_left(interface):
     result = os.system("tc -s qdisc show dev {}".format(interface))
 
 
-
+# get cwnd of outgoing tcp flow on this interface
+def get_cwnd(interface):
+    # TODO :
+      # Don't understand how to parse this!??
+    pass
 
 
