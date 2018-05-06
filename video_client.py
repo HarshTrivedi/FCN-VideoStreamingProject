@@ -85,6 +85,9 @@ def select_playback_bitrate(throughput_bitps):
 
 last_request_time = time.time()
 
+buffer_toggle_hit_time_file = 'logs/buffer_toggle_hit_time.txt'
+buffer_toggle_hit_time = None
+
 conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn.connect((ip,port))
 
@@ -154,6 +157,12 @@ while True:
         playback_rate_log(playback_rate)
         last_request_time = request_time
     else:
+        if not buffer_toggle_hit_time:
+            buffer_toggle_hit_time = time.time()
+            with open(buffer_toggle_hit_time_file, 'w') as f:
+                line = '\t'.join([ str(buffer_toggle_hit_time), str(datetime.fromtimestamp( buffer_toggle_hit_time )) ])
+                f.write( line )
+
         time.sleep(1.0)
 
 

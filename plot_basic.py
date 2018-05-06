@@ -57,7 +57,12 @@ synchronized_estm_throughputs    = []
 
 # print range(min_timestamp, max_timestamp)
 
-for time_stamp in range(min_timestamp, max_timestamp):
+buffer_step_toggle_index = None
+with open('logs/buffer_toggle_hit_time.txt', 'r') as f:
+	buffer_toggle_timestamp = float(f.read().strip().split()[0])
+
+
+for index, time_stamp in enumerate(range(min_timestamp, max_timestamp)):
 	# print sorted(vclient_throughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 	vclient_throughput = sorted(vclient_throughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 	cclient_throughput = sorted(cclient_throughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
@@ -70,6 +75,12 @@ for time_stamp in range(min_timestamp, max_timestamp):
 	synchronized_estm_throughputs.append( (8*estm_throughput) / (1024*1024.0) ) # MBits/s
 	synchronized_playback_rates.append( (8*playback_rate) / (1024*1024.0) )           # MBits/s
 
+
+	if buffer_step_toggle_index is None:
+		if time_stamp >= buffer_toggle_timestamp:
+			buffer_step_toggle_index = index-1
+
+competing_step_toggle_index = 49 # because competing flow starts at 50th second
 x_axis = range(len(synchronized_vclient_throughputs))
 
 def ksmooth(array, k ):
@@ -81,8 +92,14 @@ plt.plot( x_axis, ksmooth(synchronized_vclient_throughputs,k), '-r', label='vid.
 plt.plot( x_axis, ksmooth(synchronized_cclient_throughputs,k), '-g', label='compet. thr')
 plt.plot( x_axis, ksmooth(synchronized_playback_rates,k), '-b', label='playback rate')
 # plt.plot( x_axis, ksmooth(synchronized_estm_throughputs,k), '-', label='estm. client thr')
+
+plt.axvspan(competing_step_toggle_index, len(x_axis), alpha=0.5, color='yellow')
+plt.axvspan(buffer_step_toggle_index, len(x_axis), alpha=0.3, color='blue')
+
 plt.xlabel('seconds')
 plt.ylabel('Mbits/s')
+plt.xlim(0,len(x_axis))
+plt.ylim(0,5)
 plt.legend( loc='lower left')
 plt.show()
 # plt.savefig('main_experiment.png')
