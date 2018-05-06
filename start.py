@@ -26,6 +26,8 @@ from mininet.net import Mininet
 from mininet.util import dumpNodeConnections
 from mininet.cli import CLI
 import time
+import shutil
+import os
 from datetime import datetime
 
 
@@ -144,7 +146,15 @@ def stop_network(net):
 
 
 if __name__ == '__main__':
+
+    # clean logs first
+    logdir = 'logs/'
+    if os.path.exists(logdir):
+        shutil.rmtree(logdir)
+    os.makedirs(logdir)
+
     start_network()    
+
 
 
 
