@@ -101,8 +101,8 @@ plt.ylabel('Mbits/s')
 plt.xlim(0,len(x_axis))
 plt.ylim(0,5)
 plt.legend( loc='lower left')
-plt.show()
-# plt.savefig('main_experiment.png')
+# plt.show()
+plt.savefig('plots/main_experiment.png')
 
 
 

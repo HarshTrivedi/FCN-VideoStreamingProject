@@ -43,7 +43,6 @@ plt.ylabel('request interval (s)')
 plt.xlim(0,len(x_axis))
 plt.ylim(0,5)
 plt.legend( loc='upper left')
-
-plt.show()
-
+# plt.show()
+plt.savefig('plots/request_interval_vs_bufferfill.png')
 
