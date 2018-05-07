@@ -16,7 +16,7 @@ with open('logs/throughput-cclient-eth0.log') as f:
 
 
 vclient_throughputs = []
-with open('logs/throughput-vclient-eth0.log') as f:
+with open('logs/receive-throughput-vclient.log') as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -25,14 +25,14 @@ with open('logs/throughput-vclient-eth0.log') as f:
 		all_timestamps.append( int(timestamp) )
 
 
-estm_vthroughputs = []
-with open('logs/estm-throughput-vclient.log') as f:
-	for line in f.readlines():
-		array = line.strip().split('\t')
-		timestamp = float(array[0])
-		throughput = float(array[2])
-		estm_vthroughputs.append( (timestamp, throughput) )
-		all_timestamps.append( int(timestamp) )
+# estm_vthroughputs = []
+# with open('logs/estm-throughput-vclient.log') as f:
+# 	for line in f.readlines():
+# 		array = line.strip().split('\t')
+# 		timestamp = float(array[0])
+# 		throughput = float(array[2])
+# 		estm_vthroughputs.append( (timestamp, throughput) )
+# 		all_timestamps.append( int(timestamp) )
 
 
 
@@ -67,12 +67,12 @@ for index, time_stamp in enumerate(range(min_timestamp, max_timestamp)):
 	vclient_throughput = sorted(vclient_throughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 	cclient_throughput = sorted(cclient_throughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 
-	estm_throughput    = sorted(estm_vthroughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
+	# estm_throughput    = sorted(estm_vthroughputs, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 	playback_rate      = sorted(playback_rates, key = lambda e: abs(int(e[0]) - time_stamp)  )[0][1]
 
 	synchronized_vclient_throughputs.append( (8*vclient_throughput) / (1024*1024.0) ) # MBits/s
 	synchronized_cclient_throughputs.append( (8*cclient_throughput) / (1024*1024.0) ) # MBits/s
-	synchronized_estm_throughputs.append( (8*estm_throughput) / (1024*1024.0) ) # MBits/s
+	# synchronized_estm_throughputs.append( (8*estm_throughput) / (1024*1024.0) ) # MBits/s
 	synchronized_playback_rates.append( (8*playback_rate) / (1024*1024.0) )           # MBits/s
 
 
@@ -86,7 +86,7 @@ x_axis = range(len(synchronized_vclient_throughputs))
 def ksmooth(array, k ):
 	return [ sum(array[max(i-k,0):i+1])/float(i+1-max(i-k,0))  for i,x in enumerate(array)]
 
-k = 2
+k = 5
 plt.style.use('seaborn-whitegrid')
 plt.plot( x_axis, ksmooth(synchronized_vclient_throughputs,k), '-r', label='vid. thr')
 plt.plot( x_axis, ksmooth(synchronized_cclient_throughputs,k), '-g', label='compet. thr')

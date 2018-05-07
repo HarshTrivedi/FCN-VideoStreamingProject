@@ -53,10 +53,10 @@ def playback_rate_log(playback_rate):
         f.write( line  + '\n')
 
 
-estimated_video_throughput_rate_file = 'logs/estm-throughput-vclient.log'
-def estimated_video_throughput_log(throughput):
+receive_video_throughput_rate_file = 'logs/receive-throughput-vclient.log'
+def receive_video_throughput_log(throughput):
 
-    with open(estimated_video_throughput_rate_file, 'a+') as f:
+    with open(receive_video_throughput_rate_file, 'a+') as f:
         curr_time = time.time()
         line = '\t'.join([ str(curr_time), str(datetime.fromtimestamp( curr_time )) , str(throughput)])
         f.write( line  + '\n')
@@ -101,7 +101,7 @@ while True:
         estimated_throughput = sum(recent_samples)/float(len(recent_samples))
 
     py_log('estimated_throughput: {}'.format(estimated_throughput))
-    estimated_video_throughput_log(estimated_throughput)
+
 
     if rate_selection:
         estimated_throughput_bitsps = estimated_throughput*8
@@ -153,6 +153,7 @@ while True:
         py_log("This much will be added: {}".format(segment_seconds))
         PlaybackBuffer.add(segment_seconds)
 
+        receive_video_throughput_log(receive_throughput)
         request_interval_log(last_request_time, request_interval)
         playback_rate_log(playback_rate)
         last_request_time = request_time
