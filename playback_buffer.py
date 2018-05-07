@@ -7,7 +7,7 @@ class PlaybackBuffer:
     @classmethod
     def read(cls):
         with open(PlaybackBuffer.buffer_state_file, 'r') as f:
-            playback_buffer = int(f.read().strip())
+            playback_buffer = float(f.read().strip())
         return playback_buffer
 
     @classmethod

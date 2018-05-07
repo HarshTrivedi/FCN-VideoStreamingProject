@@ -3,7 +3,7 @@
 from playback_buffer import *
 import time
 
-interval = 1 
+interval = 0.5
 while True:
     playback_buffer = PlaybackBuffer.read()
     PlaybackBuffer.add( -interval )
