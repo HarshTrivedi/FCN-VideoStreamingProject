@@ -92,11 +92,10 @@ def start_network():
     print 'Started  daeomon to log throughput on competing client interface periodically'
     
     # start congestion window logging on server for port that has video-streaming
-    server.cmd('python log_cwnd.py {} &'.format(video_stream_port))
-    
-    # start congestion_window_logging.py on server for port that has competing-flow [redundant]
-    server.cmd('python log_cwnd.py {} &'.format(competing_flow_port))
-    
+    server.cmd('python log_cwnd.py {} &'.format(video_stream_port) )    
+
+    # start congestion window logging on server for port that has competing-flow
+    server.cmd('python log_cwnd.py {} &'.format(competing_flow_port) )    
 
     # wait for X seconds to start the competing-flow
     print 'Waiting to start the Competing Flow. It will take {} seconds'.format( competing_flow_start_time - experiment_start_time )
@@ -119,7 +118,6 @@ def start_network():
                 print 'Competing flow client started.'
 
                 competing_flow_started = True
-
         time.sleep(1)
 
         if current_time - experiment_start_time > experiment_duration:

@@ -41,9 +41,23 @@ def link_buffer_left(interface):
 
 
 # get cwnd of outgoing tcp flow on this interface
-def get_cwnd(interface):
-    # TODO :
-      # Don't understand how to parse this!??
-    pass
-
+##
+# Netid  State      Recv-Q Send-Q   Local Address:Port       Peer Address:Port
+# tcp    ESTAB      0      264984        10.0.0.2:46146          10.0.0.1:5001
+#    cubic wscale:9,9 rto:244 rtt:42.81/1.531 mss:1448 cwnd:19 ssthresh:6 send 5.1Mbps unacked:19 rcv_space:29200
+# tcp    ESTAB      0      0             10.0.0.2:5000           10.0.0.3:36292
+#    cubic wscale:9,9 rto:248 rtt:46.804/4.507 ato:40 mss:1448 cwnd:12 ssthresh:8 send 3.0Mbps rcv_space:28960
+##
+def get_cwnd(port):
+    array = os.popen('ss -i').read().strip().split('\n')
+    for index, line in enumerate(array):
+        if ':{}'.format(port) in line:
+            break
+    if index + 1 == len(array):
+        return None
+    line = array[index+1]
+    mss_bytes = [ int(e.split(':')[1]) for e in line.split() if 'mss' in e][0]
+    cwnd_size = [ int(e.split(':')[1]) for e in line.split() if 'cwnd' in e][0]
+    cwnd = mss_bytes*cwnd_size
+    return cwnd
 
