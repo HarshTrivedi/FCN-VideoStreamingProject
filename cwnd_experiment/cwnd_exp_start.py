@@ -53,6 +53,10 @@ def start_network():
 
     video_stream_port   = 5000
 
+    video_client.cmd('python log_throughput.py vclient-eth0 &')
+    competing_client.cmd('python log_throughput.py cclient-eth0 &')
+
+
     # start congestion window logging on server for port that has video-streaming
     server.cmd('python log_cwnd.py {} 0.05 &'.format(video_stream_port) )    
     print 'Started cwnd logging'
@@ -110,6 +114,7 @@ if __name__ == '__main__':
     os.makedirs(logdir)
 
     start_network()    
+
 
 
 
