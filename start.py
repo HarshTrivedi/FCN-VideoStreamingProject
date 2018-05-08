@@ -29,7 +29,7 @@ import time
 import shutil
 import os
 from datetime import datetime
-
+import settings
 
 
 def start_network():
@@ -43,10 +43,10 @@ def start_network():
     dumpNodeConnections(net.hosts)
     net.pingAll()
 
-    experiment_duration       = 300  # 15 minutes
+    experiment_duration       = settings.experiment_duration
     experiment_start_time     = time.time()
-    competing_flow_start_time = experiment_start_time + 100 # start after 5 minutes
-    competing_flow_duration   = 100
+    competing_flow_start_time = experiment_start_time + settings.competing_flow_start_at
+    competing_flow_duration   = settings.competing_flow_duration
     
     server                = net.get('server')
     video_client          = net.get('vclient')

@@ -8,8 +8,10 @@ import thread
 from playback_buffer import *
 from datetime import datetime
 import sys
+import lib
 import os
 import time
+import settings
 
 ip   = sys.argv[1].strip()
 port = int(sys.argv[2].strip())
@@ -31,9 +33,9 @@ thread.start_new_thread(   os.system, ('python drain_playback_buffer.py',)   )
 
 segment_seconds       = 4
 fixed_bitrate         = 1750*1024 # bits/s
-playback_buffer_limit = 100  # at max hold 1 minutes of buffer is allowed
+playback_buffer_limit = settings.playback_buffer_limit 
 received_throughput   = []
-rate_selection        = True # client-side rate selection is ON for this experiment
+rate_selection        = settings.playback_rate_selection
 buffer_size           = 1024
 
 request_interval_file = 'logs/request_interval.log'
@@ -90,7 +92,7 @@ buffer_toggle_hit_time = None
 
 conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 conn.connect((ip,port))
-
+last_request_end_time = time.time()
 
 while True:
 
@@ -126,9 +128,8 @@ while True:
         py_log('Sending Message:')
         py_log(request_bytes)
 
-        request_time_start = time.time()
         received_len = 0
-
+        x = lib.received_bytes('vclient-eth0')
         received_msg = ''
         while True:
             data = conn.recv(buffer_size)
@@ -139,13 +140,15 @@ while True:
                 break
         received_len = len(received_msg)
 
-
+        y = lib.received_bytes('vclient-eth0')
 
         py_log('Received Message Length:')
         py_log(received_len)
+        received_len = y-x
 
         request_time_end = time.time()
-        receive_throughput = received_len / (request_time_end-request_time_start )
+        # receive_throughput = received_len / (request_time_end-last_request_end_time )
+        receive_throughput = received_len / (request_time_end-request_time )
 
         received_throughput.append(receive_throughput)
 
@@ -157,6 +160,7 @@ while True:
         request_interval_log(last_request_time, request_interval)
         playback_rate_log(playback_rate)
         last_request_time = request_time
+        last_request_end_time = time.time()
     else:
         if not buffer_toggle_hit_time:
             buffer_toggle_hit_time = time.time()
@@ -164,6 +168,6 @@ while True:
                 line = '\t'.join([ str(buffer_toggle_hit_time), str(datetime.fromtimestamp( buffer_toggle_hit_time )) ])
                 f.write( line )
 
-        time.sleep(1.0)
+        time.sleep(0.1)
 
 
