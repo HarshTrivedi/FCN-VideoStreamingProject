@@ -43,9 +43,10 @@ def start_network():
     dumpNodeConnections(net.hosts)
     net.pingAll()
 
-    experiment_duration       = 150  # 15 minutes
+    experiment_duration       = 300  # 15 minutes
     experiment_start_time     = time.time()
-    competing_flow_start_time = experiment_start_time + 50 # start after 5 minutes
+    competing_flow_start_time = experiment_start_time + 100 # start after 5 minutes
+    competing_flow_duration   = 100
     
     server                = net.get('server')
     video_client          = net.get('vclient')
@@ -114,7 +115,7 @@ def start_network():
                 print 'Competing flow server started.'
 
                 # start competing_flow_server.py                
-                server.cmd("python competing_flow_client.py {} &".format( competing_client.IP() ) )
+                server.cmd("python competing_flow_client.py {} {} &".format( competing_client.IP(), competing_flow_duration ) )
                 print 'Competing flow client started.'
 
                 competing_flow_started = True

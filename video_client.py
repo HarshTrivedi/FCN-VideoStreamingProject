@@ -31,7 +31,7 @@ thread.start_new_thread(   os.system, ('python drain_playback_buffer.py',)   )
 
 segment_seconds       = 4
 fixed_bitrate         = 1750*1024 # bits/s
-playback_buffer_limit = 60  # at max hold 1 minutes of buffer is allowed
+playback_buffer_limit = 100  # at max hold 1 minutes of buffer is allowed
 received_throughput   = []
 rate_selection        = True # client-side rate selection is ON for this experiment
 buffer_size           = 1024
