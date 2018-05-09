@@ -29,7 +29,7 @@ import time
 import shutil
 import os
 from datetime import datetime
-
+import settings
 
 def start_network():
 
@@ -53,8 +53,8 @@ def start_network():
 
     video_stream_port   = 5000
 
-    segment_size = 235000
-    pause_time = 8
+    segment_size = settings.seqment_size
+    pause_time = settings.pause_time
     competing_flow_duration = 100
 
     ##############
