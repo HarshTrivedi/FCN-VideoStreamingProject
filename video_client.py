@@ -31,9 +31,9 @@ PlaybackBuffer.write(0)
 thread.start_new_thread(   os.system, ('python drain_playback_buffer.py',)   )
 
 
-segment_seconds       = 4
+segment_seconds       = settings.segment_seconds
 fixed_bitrate         = 1750*1024 # bits/s
-playback_buffer_limit = settings.playback_buffer_limit 
+playback_buffer_limit = settings.playback_buffer_limit
 received_throughput   = []
 rate_selection        = settings.playback_rate_selection
 buffer_size           = 1024
@@ -64,26 +64,45 @@ def receive_video_throughput_log(throughput):
         f.write( line  + '\n')
 
 
-def select_playback_bitrate(throughput_bitps):
-    # What to get the actual figures??
+
+def select_playback_bitrate(throughput_bitps, optimistic = False):
+
     rates_kbitps = [235,   375,    560,     750,    1050,   1400, 1750]
     rates_bitps = [ x* 1024 for x in rates_kbitps]
 
-    if throughput_bitps > (2500 * 1024):
-        bit_rate = rates_bitps[6] # 1750*1024 bits/s
-    elif throughput_bitps > (2150 * 1024):
-        bit_rate = rates_bitps[5] # 1400*1024 bits/s
-    elif throughput_bitps > (1300 * 1024):
-        bit_rate = rates_bitps[4] # 1050*1024 kbits/s
-    elif throughput_bitps > (1100 * 1024):
-        bit_rate = rates_bitps[3] # 750*1024 bits/s
-    elif throughput_bitps > (740 * 1024):
-        bit_rate = rates_bitps[2] # 560*1024 bits/s
-    elif throughput_bitps > (500 * 1024):
-        bit_rate = rates_bitps[1] # 375*1024 bits/s
+    if not optimistic:
+        if throughput_bitps > (2500 * 1024):
+            bit_rate = rates_bitps[6] # 1750*1024 bits/s
+        elif throughput_bitps > (2150 * 1024):
+            bit_rate = rates_bitps[5] # 1400*1024 bits/s
+        elif throughput_bitps > (1300 * 1024):
+            bit_rate = rates_bitps[4] # 1050*1024 kbits/s
+        elif throughput_bitps > (1100 * 1024):
+            bit_rate = rates_bitps[3] # 750*1024 bits/s
+        elif throughput_bitps > (740 * 1024):
+            bit_rate = rates_bitps[2] # 560*1024 bits/s
+        elif throughput_bitps > (500 * 1024):
+            bit_rate = rates_bitps[1] # 375*1024 bits/s
+        else:
+            bit_rate = rates_bitps[0]   # 235*1024 bits/s
     else:
-        bit_rate = rates_bitps[0]   # 235*1024 bits/s
+        if throughput_bitps > (1750 * 1024):
+            bit_rate = rates_bitps[6] # 1750*1024 bits/s
+        elif throughput_bitps > (1400 * 1024):
+            bit_rate = rates_bitps[5] # 1400*1024 bits/s
+        elif throughput_bitps > (1050 * 1024):
+            bit_rate = rates_bitps[4] # 1050*1024 kbits/s
+        elif throughput_bitps > (750 * 1024):
+            bit_rate = rates_bitps[3] # 750*1024 bits/s
+        elif throughput_bitps > (560 * 1024):
+            bit_rate = rates_bitps[2] # 560*1024 bits/s
+        elif throughput_bitps > (375 * 1024):
+            bit_rate = rates_bitps[1] # 375*1024 bits/s
+        else:
+            bit_rate = rates_bitps[0]   # 235*1024 bits/s
+
     return bit_rate
+
 
 last_request_time = time.time()
 
@@ -96,7 +115,7 @@ last_request_end_time = time.time()
 
 while True:
 
-    recent_samples = received_throughput[-10:]
+    recent_samples = received_throughput[-settings.smoothing:]
     if len(recent_samples) == 0:
         estimated_throughput = 1 # we want to choose the lowest bitrate by default
     else:
@@ -107,7 +126,7 @@ while True:
 
     if rate_selection:
         estimated_throughput_bitsps = estimated_throughput*8
-        playback_bit_rate = select_playback_bitrate(estimated_throughput_bitsps)
+        playback_bit_rate = select_playback_bitrate(estimated_throughput_bitsps, settings.optimistic )
         playback_rate     = playback_bit_rate / 8.0 # bytes/s
     else:
         playback_rate = fixed_bitrate / 8.0  # bytes/s
@@ -136,7 +155,7 @@ while True:
             received_msg += data
             if len(received_msg) >= request_bytes:
                 break
-            if not data: 
+            if not data:
                 break
         received_len = len(received_msg)
 
@@ -169,5 +188,3 @@ while True:
                 f.write( line )
 
         time.sleep(0.1)
-
-
