@@ -40,7 +40,7 @@ def request_and_get(request_bytes):
 received_throughputs = []
 mark_a = time.time()
 print "A {}".format(mark_a)
-received_throughput = request_and_get(segment_size)
+received_throughput = request_and_get(2350000)
 received_throughputs.append(received_throughput)
 mark_b = time.time()
 print "B {}".format(mark_b)
@@ -52,13 +52,23 @@ received_throughput = request_and_get(segment_size)
 received_throughputs.append(received_throughput)
 mark_d = time.time()
 print "D {}".format(mark_d)
+time.sleep(pause_time)
+
+mark_e = time.time()
+print "E {}".format(mark_e)
+received_throughput = request_and_get(segment_size)
+received_throughputs.append(received_throughput)
+mark_f = time.time()
+print "F {}".format(mark_f)
+
 
 with open('logs/cwnd_experiment_marks.txt', 'w') as f:
-    f.write('\t'.join(map(str,[mark_a, mark_b, mark_c, mark_d])))
+    f.write('\t'.join(map(str,[mark_a, mark_b, mark_c, mark_d, mark_e, mark_f])))
 
 with open('logs/apparent_throughputs.txt', 'w') as f:
     f.write('\t'.join(map(str,received_throughputs)))
 
 
 conn.close()
+
 

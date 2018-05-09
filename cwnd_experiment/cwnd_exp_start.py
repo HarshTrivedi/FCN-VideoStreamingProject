@@ -53,40 +53,41 @@ def start_network():
 
     video_stream_port   = 5000
 
-    video_client.cmd('python log_throughput.py vclient-eth0 &')
-    competing_client.cmd('python log_throughput.py cclient-eth0 &')
+    segment_size = 235000
+    pause_time = 8
+    competing_flow_duration = 100
 
-
-    # start congestion window logging on server for port that has video-streaming
-    server.cmd('python log_cwnd.py {} 0.05 &'.format(video_stream_port) )    
-    print 'Started cwnd logging'
+    ##############
+    # CLI(net)
+    competing_client.cmd("python competing_flow_server.py &")
+    print 'Competing flow server started.'
     
     # start video streaming server on server host
     server.cmd('python video_server.py {} {} &'.format(server.IP(), video_stream_port))
     print 'Started Video Streaming Server'
-    time.sleep(3)
+    ###############
+
+    time.sleep(2)
     
-    # start video streaming client on client host
-    segment_size = 2350000
-    pause_time = 10
+    ##############
+    video_client.cmd('python log_throughput.py vclient-eth0 &')
+    competing_client.cmd('python log_throughput.py cclient-eth0 &')
 
-    competing_flow_duration = 100
-    # CLI(net)
-    competing_client.cmd("python competing_flow_server.py &")
-    print 'Competing flow server started.'
+    # start congestion window logging on server for port that has video-streaming
+    server.cmd('python log_cwnd.py {} 0.05 &'.format(video_stream_port) )    
+    print 'Started cwnd logging'
+    #############
 
-    time.sleep(1)
-    # start competing_flow_server.py                
-    print "python competing_flow_client.py {} {} &".format( competing_client.IP(), competing_flow_duration ) 
 
+    #############
     server.cmd("python competing_flow_client.py {} {} &".format( competing_client.IP(), competing_flow_duration ) )
     print 'Competing flow client started.'
-    #########
 
     video_client.cmd('python pseudo_video_client.py {} {} {} {} &'.format( server.IP(), video_stream_port, segment_size, pause_time))
     print 'Started Pseudo Video Streaming Client'
+    #############    
     
-    time.sleep(45)
+    time.sleep(90)
     print 'Experiment complete.'
     stop_network(net)
 
@@ -114,6 +115,7 @@ if __name__ == '__main__':
     os.makedirs(logdir)
 
     start_network()    
+
 
 
 
