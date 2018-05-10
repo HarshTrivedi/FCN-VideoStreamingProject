@@ -29,8 +29,21 @@ import time
 import shutil
 import os
 from datetime import datetime
-import settings
 
+import sys
+import imp
+import os
+
+# Usage python start.py A
+experiment_name = sys.argv[1]
+
+settings_path = 'settings/settings-{}.py'.format(experiment_name)
+if not os.path.exists(settings_path):
+    print 'Path to {} does not exists'.format(settings_path)
+    exit()
+settings = imp.load_source("settings", settings_path)
+
+logdir = 'logs/logs-{}/'.format(experiment_name)
 
 def start_network():
 
@@ -47,6 +60,14 @@ def start_network():
     experiment_start_time     = time.time()
     competing_flow_start_time = experiment_start_time + settings.competing_flow_start_at
     competing_flow_duration   = settings.competing_flow_duration
+    competing_flow_end_time   = competing_flow_start_time + competing_flow_duration
+
+    with open('{}/competing_flow_start_time.txt'.format(logdir), 'w') as f:
+        f.write( competing_flow_start_time )
+
+    with open('{}/competing_flow_end_time.txt'.format(logdir), 'w') as f:
+        f.write( competing_flow_end_time )
+
     
     server                = net.get('server')
     video_client          = net.get('vclient')
@@ -67,11 +88,11 @@ def start_network():
     # # CLI(net) Turn this ON and execute scripts eg. server python video_server.py  <server_ip> to debug
     
     # start video streaming server on server host
-    server.cmd('python video_server.py {} {} &'.format(server.IP(), video_stream_port))
+    server.cmd('python video_server.py {} {} {} &'.format(server.IP(), video_stream_port, logdir))
     print 'Started Video Streaming Server'
     
     # start video streaming client on client host
-    video_client.cmd('python video_client.py {} {} &'.format( server.IP(), video_stream_port))
+    video_client.cmd('python video_client.py {} {} {} &'.format( server.IP(), video_stream_port, logdir))
         # Inside: make sure the client logs request intervals and playback-buffer state
     print 'Started Video Streaming Client'
     
@@ -81,22 +102,22 @@ def start_network():
     # print 'Started  daemon to log queue size left of bottleneck-link on server'
 
     # start to log the playback buffer periodically on video client
-    video_client.cmd('python log_playback_buffer.py &')
+    video_client.cmd('python log_playback_buffer.py {} &'.format(logdir) )
     print 'Started  daeomon to log PlayBack Buffer periodically on video client'
     
     # start throughput logging daemon on video client host
-    video_client.cmd('python log_throughput.py vclient-eth0 &')
+    video_client.cmd('python log_throughput.py vclient-eth0 {} &'.format(logdir) )
     print 'Started  daeomon to log throughput on video-client interface periodically'
 
     # start throughput logging daemon on competing-flow host
-    competing_client.cmd('python log_throughput.py cclient-eth0 &')                
+    competing_client.cmd('python log_throughput.py cclient-eth0 {} &'.format(logdir) )                
     print 'Started  daeomon to log throughput on competing client interface periodically'
     
     # start congestion window logging on server for port that has video-streaming
-    server.cmd('python log_cwnd.py {} &'.format(video_stream_port) )    
+    server.cmd('python log_cwnd.py {} {} &'.format(video_stream_port, logdir) )    
 
     # start congestion window logging on server for port that has competing-flow
-    server.cmd('python log_cwnd.py {} &'.format(competing_flow_port) )    
+    server.cmd('python log_cwnd.py {} {} &'.format(competing_flow_port, logdir) )    
 
     # wait for X seconds to start the competing-flow
     print 'Waiting to start the Competing Flow. It will take {} seconds'.format( competing_flow_start_time - experiment_start_time )
@@ -147,13 +168,15 @@ def stop_network(net):
 if __name__ == '__main__':
 
     # clean logs first
-    logdir = 'logs/'
     if os.path.exists(logdir):
         shutil.rmtree(logdir)
     os.makedirs(logdir)
 
-    start_network()    
+    # Start the Experiment
+    start_network()
 
+    # Generate the Plots and Save
+    os.system('python plot_and_analyse.py {}'.format(experiment_name) )
 
 
 

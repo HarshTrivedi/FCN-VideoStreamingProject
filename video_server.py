@@ -5,8 +5,9 @@ import sys
 
 ip   = sys.argv[1].strip()
 port = int(sys.argv[2].strip())
+logdir = sys.argv[3]
 
-log_file = 'logs/video_server_py.log'
+log_file = '{}/video_server_py.log'.format(logdir)
 def py_log(message):
     ##
     with open(log_file, "a+") as f:

@@ -4,8 +4,9 @@ from datetime import datetime
 import time
 
 port = sys.argv[1]
+logdir = sys.argv[2]
 
-cwnd_log_file = 'logs/cwnd-{}.log'.format(port)
+cwnd_log_file = '{}/cwnd-{}.log'.format(logdir, port)
 
 def cwnd_log(cwnd):
 

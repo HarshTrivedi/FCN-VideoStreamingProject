@@ -4,7 +4,8 @@ import lib
 from datetime import datetime
 import time
 
-playback_buffer_file = 'logs/playback_buffer.log'
+logdir = sys.argv[1]
+playback_buffer_file = '{}/playback_buffer.log'.format(logdir)
 
 def playback_buffer_log(playback_buffer):
 

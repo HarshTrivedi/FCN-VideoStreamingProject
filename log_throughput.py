@@ -4,8 +4,9 @@ from datetime import datetime
 import time
 
 interface = sys.argv[1]
+logdir = sys.argv[2]
 
-throughput_log_file = 'logs/throughput-{}.log'.format(interface)
+throughput_log_file = '{}/throughput-{}.log'.format(logdir,interface)
 
 last_received_bytes = lib.received_bytes(interface)
 last_time = time.time()
