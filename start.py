@@ -147,21 +147,8 @@ def start_network():
 
     # CLI(net)
     
-    stop_network(net)
-    print 'Experiment complete.'
-
-
-def stop_network(net):
-
-    # clean up the created processes
-    server                = net.get('server')
-    video_client          = net.get('vclient')
-    competing_client      = net.get('cclient')
-
-    server.cmd('pkill python')
-    client.cmd('pkill python')
-    client.cmd('pkill python')
     net.stop()
+    print 'Experiment complete.'
 
 
 
