@@ -32,10 +32,11 @@ thread.start_new_thread(   os.system, ('python drain_playback_buffer.py',)   )
 
 
 segment_seconds       = settings.segment_seconds
-fixed_bitrate         = 1750*1024 # bits/s
 playback_buffer_limit = settings.playback_buffer_limit
 received_throughput   = []
 rate_selection        = settings.playback_rate_selection
+if not rate_selection:
+    fixed_bitrate     = settings.fixed_bitrate # bits/s
 buffer_size           = 1024
 
 request_interval_file = 'logs/request_interval.log'
@@ -187,4 +188,8 @@ while True:
                 line = '\t'.join([ str(buffer_toggle_hit_time), str(datetime.fromtimestamp( buffer_toggle_hit_time )) ])
                 f.write( line )
 
-        time.sleep(0.1)
+        if not settings.radical_client:
+            time.sleep(0.1)
+
+        else:
+            PlaybackBuffer.add(-1)
