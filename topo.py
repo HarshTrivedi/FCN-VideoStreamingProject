@@ -29,19 +29,17 @@ class ExpTopo(Topo):
         self.addLink(video_client, switch,
                                    bw=self.full_link_bw,
                                    delay=self.delay,
-                                   # max_queue_size=1000,
                                    use_htb=True )
 
         self.addLink(competing_client, switch,
                                    bw=self.full_link_bw,
                                    delay=self.delay,
-                                   # max_queue_size=1000,
                                    use_htb=True )
 
         self.addLink(server, switch,
                                    bw=self.bottleneck_link_bw,
                                    delay=self.delay,
-                                   max_queue_size=10,
+                                   max_queue_size=100,
                                    use_htb=True )
 
 

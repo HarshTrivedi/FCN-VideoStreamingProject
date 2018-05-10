@@ -63,10 +63,10 @@ def start_network():
     competing_flow_end_time   = competing_flow_start_time + competing_flow_duration
 
     with open('{}/competing_flow_start_time.txt'.format(logdir), 'w') as f:
-        f.write( competing_flow_start_time )
+        f.write( str(competing_flow_start_time) )
 
     with open('{}/competing_flow_end_time.txt'.format(logdir), 'w') as f:
-        f.write( competing_flow_end_time )
+        f.write( str(competing_flow_end_time) )
 
     
     server                = net.get('server')

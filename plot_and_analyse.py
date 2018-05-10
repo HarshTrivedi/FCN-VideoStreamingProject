@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('Agg')
 import math
 import matplotlib.pyplot as plt
 from matplotlib.offsetbox import AnchoredText
@@ -11,14 +13,14 @@ import sys
 # plotdir = 'Final-plots-{}'.format(exp)
 
 exp     = sys.argv[1]
-logdir  = 'logs/logs-{}/'.format(experiment_name)
-plotdir = 'plots/plots-{}/'.format(experiment_name)
+logdir  = 'logs/logs-{}'.format(exp)
+plotdir = 'plots/plots-{}'.format(exp)
 
 
 all_timestamps = []
 
 cclient_throughputs = []
-with open('{}/throughput-cclient-eth0.log'.format(log_dir) ) as f:
+with open('{}/throughput-cclient-eth0.log'.format(logdir) ) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -28,7 +30,7 @@ with open('{}/throughput-cclient-eth0.log'.format(log_dir) ) as f:
 
 
 vclient_throughputs = []
-with open('{}/throughput-vclient-eth0.log'.format(log_dir)) as f:
+with open('{}/throughput-vclient-eth0.log'.format(logdir)) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -38,7 +40,7 @@ with open('{}/throughput-vclient-eth0.log'.format(log_dir)) as f:
 
 
 estm_vthroughputs = []
-with open('{}/receive-throughput-vclient.log'.format(log_dir)) as f:
+with open('{}/receive-throughput-vclient.log'.format(logdir)) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -49,7 +51,7 @@ with open('{}/receive-throughput-vclient.log'.format(log_dir)) as f:
 
 
 playback_rates = []
-with open('{}/playback_rate.log'.format(log_dir)) as f:
+with open('{}/playback_rate.log'.format(logdir)) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -59,7 +61,7 @@ with open('{}/playback_rate.log'.format(log_dir)) as f:
 
 
 request_intervals = []
-with open('{}/request_interval.log'.format(log_dir)) as f:
+with open('{}/request_interval.log'.format(logdir)) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -87,7 +89,7 @@ k = 10
 
 ##########
 playback_buffers = []
-with open('{}/playback_buffer.log'.format(log_dir)) as f:
+with open('{}/playback_buffer.log'.format(logdir)) as f:
 	for line in f.readlines():
 		array = line.strip().split('\t')
 		timestamp = float(array[0])
@@ -100,28 +102,28 @@ playback_rebuffer_time = round(playback_rebuffers_count*timediff,2)
 ##########
 
 ##########
-buffer_toggle_hit_file   = '{}/buffer_toggle_hit_time.txt'.format(log_dir)
+buffer_toggle_hit_file   = '{}/buffer_toggle_hit_time.txt'.format(logdir)
 if os.path.exists(buffer_toggle_hit_file):
     with open(buffer_toggle_hit_file, 'r') as f:
-        buffer_toggle_timestamp = float(f.read().strip().split()[0])
+        buffer_toggle_timestamp = float(f.read().strip().split()[0])-min_timestamp
 else:
     buffer_toggle_timestamp = plot_duration
 ##########
 
 ##########
-competing_flow_start_time_file   = '{}/competing_flow_start_time.txt'.format(log_dir)
+competing_flow_start_time_file   = '{}/competing_flow_start_time.txt'.format(logdir)
 if os.path.exists(competing_flow_start_time_file):
     with open(competing_flow_start_time_file, 'r') as f:
-        competing_flow_start_timestamp = float(f.read().strip().split()[0])
+        competing_flow_start_timestamp = float(f.read().strip().split()[0])-min_timestamp
 else:
     competing_flow_start_timestamp = plot_duration
 ##########
 
 ##########
-competing_flow_end_time_file   = '{}/competing_flow_end_time.txt'.format(log_dir)
+competing_flow_end_time_file   = '{}/competing_flow_end_time.txt'.format(logdir)
 if os.path.exists(competing_flow_end_time_file):
     with open(competing_flow_end_time_file, 'r') as f:
-        competing_flow_end_timestamp = float(f.read().strip().split()[0])
+        competing_flow_end_timestamp = float(f.read().strip().split()[0])-min_timestamp
 else:
     competing_flow_end_timestamp = plot_duration
 ##########
@@ -133,9 +135,9 @@ if not os.path.exists(plotdir):
 
 plt.style.use('seaborn-whitegrid')
 plt.plot( [ e[0] for e in vclient_throughputs], ksmooth([ e[1] for e in vclient_throughputs],k), '-r', label='video throughput'        , linewidth=2.0)
-plt.plot( [ e[0] for e in cclient_throughputs], ksmooth([ e[1] for e in cclient_throughputs],k), '-g', label='competing throughput'     , linewidth=2.0)
-plt.plot( [ e[0] for e in estm_vthroughputs  ], ksmooth([ e[1] for e in estm_vthroughputs  ],k), '-b', label='playback rate'   , linewidth=2.0)
-plt.plot( [ e[0] for e in playback_rates     ], ksmooth([ e[1] for e in playback_rates     ],k), '-' , label='estm. client throughput', linewidth=2.0)
+plt.plot( [ e[0] for e in cclient_throughputs], ksmooth([ e[1] for e in cclient_throughputs],k), '-g', label='competing throughput'    , linewidth=2.0)
+plt.plot( [ e[0] for e in playback_rates     ], [ e[1] for e in playback_rates  ]                , '-b' , label='playback rate'        , linewidth=2.0)
+plt.plot( [ e[0] for e in estm_vthroughputs  ], ksmooth([ e[1] for e in estm_vthroughputs  ],k), '-', label='estm. client throughput'  , linewidth=2.0)
 
 
 
@@ -164,7 +166,7 @@ plt.plot( [ e[0] for e in request_intervals], ksmooth([ e[1] for e in request_in
 plt.axvspan(buffer_toggle_timestamp, plot_duration, alpha=0.3, color='blue')
 plt.xlabel('seconds')
 plt.ylabel('request interval (s)')
-plt.xlim(0,len(x_axis))
+plt.xlim(0,plot_duration)
 plt.ylim(0,5)
 plt.legend( loc='upper left')
 # plt.show()

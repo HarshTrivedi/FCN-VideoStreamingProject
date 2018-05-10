@@ -40,7 +40,7 @@ if not rate_selection:
     fixed_bitrate     = settings.fixed_bitrate # bits/s
 buffer_size           = 1024
 
-request_interval_file = 'logs/request_interval.log'
+request_interval_file = '{}/request_interval.log'.format(logdir)
 def request_interval_log(last_request_time, request_interval):
 
     with open(request_interval_file, 'a+') as f:
@@ -48,7 +48,7 @@ def request_interval_log(last_request_time, request_interval):
         f.write( line  + '\n')
 
 
-playback_rate_file = 'logs/playback_rate.log'
+playback_rate_file = '{}/playback_rate.log'.format(logdir)
 def playback_rate_log(playback_rate):
 
     with open(playback_rate_file, 'a+') as f:
@@ -57,7 +57,7 @@ def playback_rate_log(playback_rate):
         f.write( line  + '\n')
 
 
-receive_video_throughput_rate_file = 'logs/receive-throughput-vclient.log'
+receive_video_throughput_rate_file = '{}/receive-throughput-vclient.log'.format(logdir)
 def receive_video_throughput_log(throughput):
 
     with open(receive_video_throughput_rate_file, 'a+') as f:
@@ -108,7 +108,7 @@ def select_playback_bitrate(throughput_bitps, optimistic = False):
 
 last_request_time = time.time()
 
-buffer_toggle_hit_time_file = 'logs/buffer_toggle_hit_time.txt'
+buffer_toggle_hit_time_file = '{}/buffer_toggle_hit_time.txt'.format(logdir)
 buffer_toggle_hit_time = None
 
 conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
