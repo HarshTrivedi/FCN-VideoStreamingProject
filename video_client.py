@@ -16,6 +16,13 @@ import settings
 ip   = sys.argv[1].strip()
 port = int(sys.argv[2].strip())
 logdir = sys.argv[3]
+experiment_name = sys.argv[4]
+
+settings_path = 'settings/settings-{}.py'.format(experiment_name)
+if not os.path.exists(settings_path):
+    print 'Path to {} does not exists'.format(settings_path)
+    exit()
+settings = imp.load_source("settings", settings_path)
 
 log_file = '{}/video_client_py.log'.format(logdir)
 def py_log(message):

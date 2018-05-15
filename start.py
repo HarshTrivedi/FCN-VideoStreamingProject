@@ -92,7 +92,7 @@ def start_network():
     print 'Started Video Streaming Server'
     
     # start video streaming client on client host
-    video_client.cmd('python video_client.py {} {} {} &'.format( server.IP(), video_stream_port, logdir))
+    video_client.cmd('python video_client.py {} {} {} &'.format( server.IP(), video_stream_port, logdir, experiment_name))
         # Inside: make sure the client logs request intervals and playback-buffer state
     print 'Started Video Streaming Client'
     
