@@ -16,12 +16,13 @@ Therefore the rate selection must be done based on accurate estimation of availa
 
 Generally, the videos of these services are hosted on standard HTTP servers in CDNs. Hence, the video streaming rate selection must be done on client side. Clients decide rate based on perceived available bandwidth. However, in presence of competing flow, rate selection algorithms have to face a weird consequence which authors call "Downward Spiral". In presence of competing flow, client perceives inaccurate bandwidth which further causes a vicious feedback loop continuously reducing the perceived bandwidth making the client to choose lower and lower playback rate (video quality). Finally, client ends up playing at much lower rate (quality) then the rate sanctioned by its fair share.
 
+Please check our full report [here](https://github.com/HarshTrivedi/FCN-VideoStreamingProject/blob/master/report.pdf) and presentation [here](https://github.com/HarshTrivedi/FCN-VideoStreamingProject/blob/master/slides.pdf)
 
 ## Downward Spiral
 
 The following figure summarizes the downward spiral effect:
 
-![Downward Spiral](https://github.com/HarshTrivedi/FCN-VideoStreamingProject/raw/master/plots/plots-A/main_experiment.png)
+![Downward Spiral](https://github.com/HarshTrivedi/FCN-VideoStreamingProject/raw/master/main_experiments/plots/plots-A/main_experiment.png)
 
 ## Requirements
 
@@ -36,7 +37,7 @@ The following figure summarizes the downward spiral effect:
 The experiments are segregated in following three folders:
 
 	*  main_experiments     [on mininet VM]
-	*  cwnd_experiment	    [on mininet VM]
+	*  cwnd_experiment      [on mininet VM]
 	*  real_env_experiments [on personal machine with mahimahi]
 
 For `main_experiments`, 
