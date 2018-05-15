@@ -21,8 +21,7 @@ Generally, the videos of these services are hosted on standard HTTP servers in C
 
 The following figure summarizes the downward spiral effect:
 
-![Downward Spiral](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
-
+![Downward Spiral](https://github.com/HarshTrivedi/FCN-VideoStreamingProject/raw/master/plots/plots-A/main_experiment.png)
 
 ## Requirements
 
@@ -56,15 +55,10 @@ For `real_env_experiments`,
 	run `./main.sh`
 	Save HAR File as video.har: Open Developer Tools on Firefox. On the Network Tab, click anywhere in the file tab. Right click and save all as har.
 
-
-
 ## Pregenerated plots
 
 	* pregenerated plots for `main_experiments` are present in `main_experiments/plots` directory.
 	* pregenerated plots for `cwnd_experiment` are present in `cwnd_experiment/plots-*` directories.
 	* pregenerated plot for `real_env_experiments` is present in `real_env_experiments/plot` directory.
-
-
-
 
 
