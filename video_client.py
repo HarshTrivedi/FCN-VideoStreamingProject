@@ -11,7 +11,7 @@ import sys
 import lib
 import os
 import time
-import settings
+import imp
 
 ip   = sys.argv[1].strip()
 port = int(sys.argv[2].strip())
