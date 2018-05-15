@@ -134,10 +134,10 @@ if not os.path.exists(plotdir):
 	os.makedirs(plotdir)
 
 plt.style.use('seaborn-whitegrid')
-plt.plot( [ e[0] for e in vclient_throughputs], ksmooth([ e[1] for e in vclient_throughputs],k), '-r', label='video throughput'        , linewidth=2.0)
+plt.plot( [ e[0] for e in vclient_throughputs], ksmooth([ e[1] for e in vclient_throughputs],k), '-m', label='video throughput'        , linewidth=2.0)
 plt.plot( [ e[0] for e in cclient_throughputs], ksmooth([ e[1] for e in cclient_throughputs],k), '-g', label='competing throughput'    , linewidth=2.0)
-plt.plot( [ e[0] for e in playback_rates     ], [ e[1] for e in playback_rates  ]                , '-b' , label='playback rate'        , linewidth=2.0)
-plt.plot( [ e[0] for e in estm_vthroughputs  ], ksmooth([ e[1] for e in estm_vthroughputs  ],k), '-', label='estm. client throughput'  , linewidth=2.0)
+plt.plot( [ e[0] for e in playback_rates     ], [ e[1] for e in playback_rates  ]              , '-b', label='playback rate'           , linewidth=2.0)
+plt.plot( [ e[0] for e in estm_vthroughputs  ], ksmooth([ e[1] for e in estm_vthroughputs  ],k), '-r', label='video b/w estimates'        , linewidth=2.0)
 
 
 
@@ -150,7 +150,7 @@ plt.figtext(0.5, 0,"Total Rebuffering Wait Time:  {} (s)".format( playback_rebuf
             horizontalalignment='center')
 plt.axvspan(competing_flow_start_timestamp, competing_flow_end_timestamp, alpha=0.3, color='yellow')
 plt.axvspan(buffer_toggle_timestamp, plot_duration, alpha=0.3, color='blue')
-plt.savefig('{}/main_experiment.png'.format(plotdir) )
+plt.savefig('{}/main_experiment.png'.format(plotdir),transparent=True, bbox_inches='tight' )
 # plt.show()
 
 
@@ -170,6 +170,6 @@ plt.xlim(0,plot_duration)
 plt.ylim(0,5)
 plt.legend( loc='upper left')
 # plt.show()
-plt.savefig('{}/request_interval_vs_bufferfill.png'.format(plotdir))
+plt.savefig('{}/request_interval_vs_bufferfill.png'.format(plotdir),transparent=True, bbox_inches='tight')
 
 
