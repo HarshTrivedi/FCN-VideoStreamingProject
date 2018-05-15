@@ -1,0 +1,16 @@
+dash-akfire_interconnect_quic-video-481112310      mp4        640x360    DASH video  830k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-fastly_skyfire-video-481112310                mp4        640x360    DASH video  830k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-akfire_interconnect_quic_sep-video-481112310  mp4        640x360    DASH video  831k , avc1.64001F, video only
+dash-fastly_skyfire_sep-video-481112310            mp4        640x360    DASH video  831k , avc1.64001F, video only
+dash-akfire_interconnect_quic-video-481112305      mp4        960x540    DASH video 1577k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-fastly_skyfire-video-481112305                mp4        960x540    DASH video 1577k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-akfire_interconnect_quic_sep-video-481112305  mp4        960x540    DASH video 1722k , avc1.64001F, video only
+dash-fastly_skyfire_sep-video-481112305            mp4        960x540    DASH video 1722k , avc1.64001F, video only
+dash-akfire_interconnect_quic-video-481112306      mp4        1280x720   DASH video 3131k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-fastly_skyfire-video-481112306                mp4        1280x720   DASH video 3131k , avc1.64001F, mp4a.40.2 (48000Hz)
+dash-akfire_interconnect_quic_sep-video-481112306  mp4        1280x720   DASH video 3228k , avc1.64001F, video only
+dash-fastly_skyfire_sep-video-481112306            mp4        1280x720   DASH video 3228k , avc1.64001F, video only
+dash-akfire_interconnect_quic-video-481112309      mp4        1920x1080  DASH video 5366k , avc1.640028, mp4a.40.2 (48000Hz)
+dash-fastly_skyfire-video-481112309                mp4        1920x1080  DASH video 5366k , avc1.640028, mp4a.40.2 (48000Hz)
+dash-akfire_interconnect_quic_sep-video-481112309  mp4        1920x1080  DASH video 5367k , avc1.640028, video only
+dash-fastly_skyfire_sep-video-481112309            mp4        1920x1080  DASH video 5367k , avc1.640028, video only

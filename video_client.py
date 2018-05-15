@@ -76,39 +76,39 @@ def receive_video_throughput_log(throughput):
 
 def select_playback_bitrate(throughput_bitps, optimistic = False):
 
-    rates_kbitps = [235,   375,    560,     750,    1050,   1400, 1750]
+    rates_kbitps = [250,   400,    500,     700,    1000,   1400, 1800]
     rates_bitps = [ x* 1024 for x in rates_kbitps]
 
     if not optimistic:
         if throughput_bitps > (2500 * 1024):
-            bit_rate = rates_bitps[6] # 1750*1024 bits/s
-        elif throughput_bitps > (2150 * 1024):
+            bit_rate = rates_bitps[6] # 1800*1024 bits/s
+        elif throughput_bitps > (2100 * 1024):
             bit_rate = rates_bitps[5] # 1400*1024 bits/s
         elif throughput_bitps > (1300 * 1024):
-            bit_rate = rates_bitps[4] # 1050*1024 kbits/s
+            bit_rate = rates_bitps[4] # 1000*1024 kbits/s
         elif throughput_bitps > (1100 * 1024):
-            bit_rate = rates_bitps[3] # 750*1024 bits/s
-        elif throughput_bitps > (740 * 1024):
-            bit_rate = rates_bitps[2] # 560*1024 bits/s
+            bit_rate = rates_bitps[3] # 700*1024 bits/s
+        elif throughput_bitps > (750 * 1024):
+            bit_rate = rates_bitps[2] # 500*1024 bits/s
         elif throughput_bitps > (500 * 1024):
-            bit_rate = rates_bitps[1] # 375*1024 bits/s
+            bit_rate = rates_bitps[1] # 400*1024 bits/s
         else:
-            bit_rate = rates_bitps[0]   # 235*1024 bits/s
+            bit_rate = rates_bitps[0] # 250*1024 bits/s
     else:
-        if throughput_bitps > (1750 * 1024):
-            bit_rate = rates_bitps[6] # 1750*1024 bits/s
+        if throughput_bitps > (1800 * 1024):
+            bit_rate = rates_bitps[6] # 1800*1024 bits/s
         elif throughput_bitps > (1400 * 1024):
             bit_rate = rates_bitps[5] # 1400*1024 bits/s
-        elif throughput_bitps > (1050 * 1024):
-            bit_rate = rates_bitps[4] # 1050*1024 kbits/s
-        elif throughput_bitps > (750 * 1024):
-            bit_rate = rates_bitps[3] # 750*1024 bits/s
-        elif throughput_bitps > (560 * 1024):
-            bit_rate = rates_bitps[2] # 560*1024 bits/s
-        elif throughput_bitps > (375 * 1024):
-            bit_rate = rates_bitps[1] # 375*1024 bits/s
+        elif throughput_bitps > (1000 * 1024):
+            bit_rate = rates_bitps[4] # 1000*1024 kbits/s
+        elif throughput_bitps > (700 * 1024):
+            bit_rate = rates_bitps[3] # 700*1024 bits/s
+        elif throughput_bitps > (500 * 1024):
+            bit_rate = rates_bitps[2] # 500*1024 bits/s
+        elif throughput_bitps > (400 * 1024):
+            bit_rate = rates_bitps[1] # 400*1024 bits/s
         else:
-            bit_rate = rates_bitps[0]   # 235*1024 bits/s
+            bit_rate = rates_bitps[0] # 250*1024 bits/s
 
     return bit_rate
 

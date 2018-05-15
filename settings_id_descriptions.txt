@@ -1,0 +1,29 @@
+Main Observation:
+	Buffer Fillup   < Competing Start 	A
+	Competing Start < Buffer Fillup 	B
+
+Improvement 1: Bigger Segments Help:
+	Segments 1		K
+	Segments 4		A
+	Segments 8		L
+
+Improvement 2: Wider Smoothing Helps:
+	smoothing 1		H
+	smoothing 10	A
+	smoothing 20	F
+	smoothing 50	J
+	smoothing 100	I
+
+Improvement 3: Client Optimism Helps:
+	optimism False		A
+	optimism True		M
+
+Controlled Throw Client Helps:
+
+	radical_client  False	A
+	radical_client  True	P
+
+Before and After:
+
+	default  			A
+	radical+optimism	Q
