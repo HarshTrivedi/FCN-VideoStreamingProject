@@ -13,13 +13,13 @@ client_throughput="logs/client.log"
 competing_throughput="logs/competing.log"
 
 echo "Start Client Flow"
-mm-link ./unlimited.trace ./utilize.trace --downlink-log="${client_throughput}" --meter-downlink -- ./client.sh ${URL} &
+mm-link ./utilize.trace ./utilize.trace --downlink-log="${client_throughput}" --meter-downlink -- ./client.sh ${URL} &
 client_pid=$!
 
 sleep 50
 
 echo "Starting Competing Flow"
-mm-link ./unlimited.trace ./utilize.trace --downlink-log="${competing_throughput}" --meter-downlink -- ./competing.sh ${URL} &
+mm-link ./utilize.trace ./utilize.trace --downlink-log="${competing_throughput}" --meter-downlink -- ./competing.sh ${URL} &
 competing_pid=$!
 
 wait $client_pid
