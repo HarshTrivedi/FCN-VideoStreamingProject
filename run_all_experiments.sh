@@ -26,7 +26,7 @@ echo 'Experiment I started...'
 sudo python start.py I
 
 echo 'Experiment J started...'
-sudo python start.py K
+sudo python start.py J
 
 echo 'Experiment K started...'
 sudo python start.py K
