@@ -7,6 +7,6 @@ import sys
 iperf_server_ip = sys.argv[1]
 competing_flow_duration = int(sys.argv[2].strip())
 # iperf client start
-os.system('iperf -c {} -t {} -i 1 -y -Z cong'.format(iperf_server_ip, competing_flow_duration))
+os.system('iperf -c {} -t {} -i 1'.format(iperf_server_ip, competing_flow_duration))
 
 
